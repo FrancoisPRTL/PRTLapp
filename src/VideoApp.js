@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Info, Home, Video, Download, ExternalLink } from "lucide-react";
+import { Info, Home, Video, Download } from "lucide-react";
 import michelinMap from './/circuitmap.jpg';
 import PRTLMap from './/PRTLmap.jpg';
 import paroisseMap from './/eglisemap.jpg';
