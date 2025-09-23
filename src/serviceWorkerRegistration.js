@@ -10,16 +10,33 @@ const isLocalhost = Boolean(
     )
 );
 
-export function register() {
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
+export function register(config) {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
-      if (isLocalhost) {
-        checkValidServiceWorker(swUrl);
-      } else {
-        registerValidSW(swUrl);
-      }
+      navigator.serviceWorker
+        .register(swUrl)
+        .then((registration) => {
+          // Vérifie si un nouveau SW est dispo
+          registration.onupdatefound = () => {
+            const installingWorker = registration.installing;
+            if (installingWorker) {
+              installingWorker.onstatechange = () => {
+                if (installingWorker.state === 'installed') {
+                  if (navigator.serviceWorker.controller) {
+                    // Nouvelle version trouvée → rechargement auto
+                    console.log("Nouvelle version dispo, rechargement…");
+                    window.location.reload();
+                  }
+                }
+              };
+            }
+          };
+        })
+        .catch((error) => {
+          console.error('Erreur lors de l’enregistrement du SW :', error);
+        });
     });
   }
 }
