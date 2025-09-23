@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 // src/serviceWorkerRegistration.js
 
 // Ce fichier enregistre un service worker pour activer le mode hors-ligne et l'installation en PWA
