@@ -1,34 +1,23 @@
-/* eslint-disable no-unused-vars */
+// serviceWorkerRegistration.js
 
-// src/serviceWorkerRegistration.js
-
-// Ce fichier enregistre un service worker pour activer le mode hors-ligne et l'installation en PWA
-
-const isLocalhost = Boolean(
-  window.location.hostname === "localhost" ||
-    window.location.hostname === "[::1]" ||
-    window.location.hostname.match(
-      /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
-    )
-);
-
-export function register(config) {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
-
+// Enregistre le service worker et force la mise à jour dès qu'une nouvelle version est dispo
+export function register() {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
       navigator.serviceWorker
-        .register(swUrl)
+        .register("/service-worker.js")
         .then((registration) => {
-          // Vérifie si un nouveau SW est dispo
+          console.log("Service Worker enregistré :", registration);
+
+          // Écoute les mises à jour du SW
           registration.onupdatefound = () => {
-            const installingWorker = registration.installing;
-            if (installingWorker) {
-              installingWorker.onstatechange = () => {
-                if (installingWorker.state === 'installed') {
+            const newWorker = registration.installing;
+            if (newWorker) {
+              newWorker.onstatechange = () => {
+                if (newWorker.state === "installed") {
                   if (navigator.serviceWorker.controller) {
-                    // Nouvelle version trouvée → rechargement auto
-                    console.log("Nouvelle version dispo, rechargement…");
+                    // Une nouvelle version est dispo → on force le refresh
+                    console.log("Nouvelle version dispo, rafraîchissement forcé…");
                     window.location.reload();
                   }
                 }
@@ -37,43 +26,13 @@ export function register(config) {
           };
         })
         .catch((error) => {
-          console.error('Erreur lors de l’enregistrement du SW :', error);
+          console.error("Erreur lors de l'enregistrement du Service Worker :", error);
         });
     });
   }
 }
 
-function registerValidSW(swUrl) {
-  navigator.serviceWorker
-    .register(swUrl)
-    .then((registration) => {
-      console.log("Service Worker enregistré :", registration);
-    })
-    .catch((error) => {
-      console.error("Erreur Service Worker :", error);
-    });
-}
-
-function checkValidServiceWorker(swUrl) {
-  fetch(swUrl, { headers: { "Service-Worker": "script" } })
-    .then((response) => {
-      if (
-        response.status === 404 ||
-        response.headers.get("content-type").indexOf("javascript") === -1
-      ) {
-        navigator.serviceWorker.ready.then((registration) => {
-          registration.unregister();
-          window.location.reload();
-        });
-      } else {
-        registerValidSW(swUrl);
-      }
-    })
-    .catch(() => {
-      console.log("Pas de connexion Internet. Mode hors-ligne.");
-    });
-}
-
+// Désenregistrement si besoin (optionnel)
 export function unregister() {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.ready
