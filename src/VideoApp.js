@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Info, Home, Video, Download, Calendar } from "lucide-react";
-import michelinMap from './circuitmap.jpg';
-import PRTLMap from './PRTLmap.jpg';
-import paroisseMap from './eglisemap.jpg';
 
 export default function VideoApp() {
   const [tab, setTab] = useState("home");
@@ -28,17 +25,17 @@ export default function VideoApp() {
     {
       title: "Paroisse",
       link: "https://www.paroisse-st-pardoux.org/",
-      thumbnail: paroisseMap,
+      thumbnail: "/eglisemap.jpg",
     },
     {
       title: "PRTL",
       link: "https://www.paroisse-st-pardoux.org/prtl.html",
-      thumbnail: PRTLMap,
+      thumbnail: "/PRTLmap.jpg",
     },
     {
       title: "Idées Visites",
       link: "https://www.google.com/maps/d/edit?hl=fr&mid=1GyytTfkgaYhhhYK_oLcJer9p6ABZQHI&ll=46.215995514997644%2C1.784491877714216&z=9",
-      thumbnail: michelinMap,
+      thumbnail: "/circuitmap.jpg",
     },
   ];
 
